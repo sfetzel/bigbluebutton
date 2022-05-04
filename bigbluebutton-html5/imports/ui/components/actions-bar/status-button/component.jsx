@@ -27,12 +27,16 @@ const propTypes = {
   }).isRequired,
   getEmojiList: PropTypes.func.isRequired,
   setEmojiStatus: PropTypes.func.isRequired,
-  isMeteorConnected: PropTypes.bool.isRequired,
-  usersArray: PropTypes.arrayOf({
-    emoji: PropTypes.string.isRequired,
-    userId: PropTypes.string.isRequired,
-  }).isRequired,
   normalizeEmojiName: PropTypes.func.isRequired,
+  isMeteorConnected: PropTypes.bool,
+  usersArray: PropTypes.arrayOf(PropTypes.shape({
+    emoji: PropTypes.string.isRequired,
+  })),
+};
+
+const defaultProps = {
+  usersArray: [],
+  isMeteorConnected: false,
 };
 
 class StatusButton extends PureComponent {
@@ -40,12 +44,10 @@ class StatusButton extends PureComponent {
     super(props);
 
     this.state = {
-      isActionsOpen: false,
       selected: false,
     };
 
     this.getActionsList = this.getActionsList.bind(this);
-    this.resetMenuState = this.resetMenuState.bind(this);
     this.handleClose = this.handleClose.bind(this);
   }
 
@@ -75,7 +77,6 @@ class StatusButton extends PureComponent {
         label: intl.formatMessage({ id: `app.actionsBar.emojiMenu.${s}Label` }),
         onClick: () => {
           setEmojiStatus(currentUser.userId, s);
-          this.resetMenuState();
           this.handleClose();
         },
         icon: emojiList[s],
@@ -89,20 +90,12 @@ class StatusButton extends PureComponent {
       label: intl.formatMessage(messages.ClearStatusLabel),
       onClick: () => {
         setEmojiStatus(currentUser.userId, 'none');
-        this.resetMenuState();
         this.handleClose();
       },
       icon: 'clear_status',
     });
 
     return availableActions;
-  }
-
-  resetMenuState() {
-    return this.setState({
-      isActionsOpen: false,
-      selected: false,
-    });
   }
 
   render() {
@@ -112,7 +105,7 @@ class StatusButton extends PureComponent {
       normalizeEmojiName,
       intl,
     } = this.props;
-    const { isActionsOpen, selected } = this.state;
+    const { selected } = this.state;
     const label = intl.formatMessage(messages.statusTriggerLabel);
 
     const actions = this.getActionsList();
@@ -131,7 +124,6 @@ class StatusButton extends PureComponent {
               hideLabel
               color={!isStatusEmpty ? 'primary' : 'default'}
               label={label}
-              isActionsOpen={isActionsOpen}
               selected={selected === true}
               tabIndex={-1}
               role="button"
@@ -148,5 +140,6 @@ class StatusButton extends PureComponent {
 }
 
 StatusButton.propTypes = propTypes;
+StatusButton.defaultProps = defaultProps;
 
 export default injectIntl(StatusButton);
