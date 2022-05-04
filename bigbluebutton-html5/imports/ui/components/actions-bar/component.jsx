@@ -7,6 +7,7 @@ import ScreenshareButtonContainer from '/imports/ui/components/actions-bar/scree
 import AudioControlsContainer from '../audio/audio-controls/container';
 import JoinVideoOptionsContainer from '../video-provider/video-button/container';
 import PresentationOptionsContainer from './presentation-options/component';
+import StatusButtonContainer from './status-button/container';
 
 class ActionsBar extends PureComponent {
   render() {
@@ -28,6 +29,7 @@ class ActionsBar extends PureComponent {
       isRaiseHandButtonEnabled,
       isPresentationDisabled,
       isThereCurrentPresentation,
+      enableStatusButton,
       allowExternalVideo,
       setEmojiStatus,
       currentUser,
@@ -79,8 +81,8 @@ class ActionsBar extends PureComponent {
           />
         </Styled.Center>
         <Styled.Right>
-          {!isOldMinimizeButtonEnabled ||
-            (isOldMinimizeButtonEnabled && isLayoutSwapped && !isPresentationDisabled)
+          {!isOldMinimizeButtonEnabled
+            || (isOldMinimizeButtonEnabled && isLayoutSwapped && !isPresentationDisabled)
             ? (
               <PresentationOptionsContainer
                 isLayoutSwapped={isLayoutSwapped}
@@ -118,6 +120,11 @@ class ActionsBar extends PureComponent {
                   );
                 }}
               />
+            )
+            : null}
+          {enableStatusButton
+            ? (
+              <StatusButtonContainer />
             )
             : null}
         </Styled.Right>

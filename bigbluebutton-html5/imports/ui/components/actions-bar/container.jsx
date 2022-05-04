@@ -50,6 +50,7 @@ const PRESENTATION_DISABLED = Meteor.settings.public.layout.hidePresentation;
 const SELECT_RANDOM_USER_ENABLED = Meteor.settings.public.selectRandomUser.enabled;
 const RAISE_HAND_BUTTON_ENABLED = Meteor.settings.public.app.raiseHandActionButton.enabled;
 const OLD_MINIMIZE_BUTTON_ENABLED = Meteor.settings.public.presentation.oldMinimizeButton;
+const STATUS_BUTTON_ENABLED = Meteor.settings.public.app.enableStatusButton;
 
 export default withTracker(() => ({
   amIModerator: Service.amIModerator(),
@@ -69,6 +70,7 @@ export default withTracker(() => ({
   isSelectRandomUserEnabled: SELECT_RANDOM_USER_ENABLED,
   isRaiseHandButtonEnabled: RAISE_HAND_BUTTON_ENABLED,
   isOldMinimizeButtonEnabled: OLD_MINIMIZE_BUTTON_ENABLED,
+  enableStatusButton: STATUS_BUTTON_ENABLED,
   isThereCurrentPresentation: Presentations.findOne({ meetingId: Auth.meetingID, current: true },
     { fields: {} }),
   allowExternalVideo: isExternalVideoEnabled(),
