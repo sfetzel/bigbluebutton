@@ -5,6 +5,7 @@ import ChatService from '../../service';
 import { layoutSelect } from '../../../layout/context';
 import PollService from '/imports/ui/components/poll/service';
 import Auth from '/imports/ui/services/auth';
+import UserListService from '/imports/ui/components/user-list/service';
 
 const CHAT_CONFIG = Meteor.settings.public.chat;
 const SYSTEM_CHAT_TYPE = CHAT_CONFIG.type_system;
@@ -17,6 +18,7 @@ const TimeWindowChatItemContainer = (props) => {
 
   const usingUsersContext = useContext(UsersContext);
   const { users } = usingUsersContext;
+  const { normalizeEmojiName } = UserListService;
   const {
     sender,
     senderName,
@@ -58,6 +60,7 @@ const TimeWindowChatItemContainer = (props) => {
         systemMessage: messageId.startsWith(SYSTEM_CHAT_TYPE) || !sender,
         messageKey,
         handleReadMessage,
+        normalizeEmojiName,
         ...props,
       }
       }

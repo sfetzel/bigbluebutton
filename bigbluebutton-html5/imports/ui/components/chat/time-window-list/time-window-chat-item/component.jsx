@@ -6,6 +6,7 @@ import UserAvatar from '/imports/ui/components/user-avatar/component';
 import ChatLogger from '/imports/ui/components/chat/chat-logger/ChatLogger';
 import PollService from '/imports/ui/components/poll/service';
 import Styled from './styles';
+import Icon from '/imports/ui/components/common/icon/component';
 
 const CHAT_CONFIG = Meteor.settings.public.chat;
 const CHAT_CLEAR_MESSAGE = CHAT_CONFIG.system_messages_keys.chat_clear;
@@ -147,8 +148,10 @@ class TimeWindowChatItem extends PureComponent {
       color,
       messageFromModerator,
       avatar,
+      user,
       isOnline,
       isSystemSender,
+      normalizeEmojiName
     } = this.props;
 
     const dateTime = new Date(timestamp);
@@ -156,6 +159,10 @@ class TimeWindowChatItem extends PureComponent {
     ChatLogger.debug('TimeWindowChatItem::renderMessageItem', this.props);
     const defaultAvatarString = name?.toLowerCase().slice(0, 2) || "  ";
     const emphasizedText = messageFromModerator && CHAT_EMPHASIZE_TEXT && chatId === CHAT_PUBLIC_ID;
+
+    const iconUser = user.emoji !== 'none'
+      ? (<Icon iconName={normalizeEmojiName(user.emoji)} />)
+      : user.name.toLowerCase().slice(0, 2);
 
     return (
       <Styled.Item key={`time-window-${messageKey}`}>
@@ -165,8 +172,9 @@ class TimeWindowChatItem extends PureComponent {
               color={color}
               moderator={messageFromModerator}
               avatar={avatar}
+              emoji={user.emoji !== 'none'}
             >
-              {defaultAvatarString}
+              {user.emoji !== 'none' ? iconUser : defaultAvatarString}
             </UserAvatar>
           </Styled.AvatarWrapper>
           <Styled.Content>
