@@ -2,11 +2,18 @@ import React, { PureComponent } from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import Styled from './styles';
-import Icon from '/imports/ui/components/common/icon/component';
 import BBBMenu from '/imports/ui/components/common/menu/component';
 
-// Messages taken from user-list-item component
 const messages = defineMessages({
+  disableAnimationsLabel: {
+    id: 'app.actionsBar.statusButton.disableAnimationsLabel',
+    description: 'label for option to disable status/emoji animations',
+  },
+  enableAnimationsLabel: {
+    id: 'app.actionsBar.statusButton.enableAnimationsLabel',
+    description: 'label for option to enable status/emoji animations',
+  },
+  // The following messages have been taken from user-list-item component
   statusTriggerLabel: {
     id: 'app.actionsBar.emojiMenu.statusTriggerLabel',
     description: 'label for option to show emoji menu',
@@ -30,7 +37,8 @@ const propTypes = {
   normalizeEmojiName: PropTypes.func.isRequired,
   isMeteorConnected: PropTypes.bool,
   usersArray: PropTypes.arrayOf(PropTypes.shape({
-    emoji: PropTypes.string.isRequired,
+    emoji: PropTypes.string,
+    name: PropTypes.string.isRequired,
   })),
 };
 
@@ -45,6 +53,7 @@ class StatusButton extends PureComponent {
 
     this.state = {
       selected: false,
+      enableAnimations: true,
     };
 
     this.getActionsList = this.getActionsList.bind(this);
@@ -65,6 +74,7 @@ class StatusButton extends PureComponent {
     const {
       getEmojiList, currentUser, setEmojiStatus, isMeteorConnected, intl,
     } = this.props;
+    const { enableAnimations } = this.state;
 
     const emojiList = getEmojiList();
     const statuses = Object.keys(emojiList);
@@ -95,6 +105,18 @@ class StatusButton extends PureComponent {
       icon: 'clear_status',
     });
 
+    const changeAnimationLabel = enableAnimations
+      ? messages.enableAnimationsLabel : messages.disableAnimationsLabel;
+    availableActions.push({
+      allowed: true,
+      key: 'enableAnimations',
+      label: intl.formatMessage(changeAnimationLabel),
+      onClick: () => {
+        this.setState({ enableAnimations: !enableAnimations });
+        this.handleClose();
+      },
+    });
+
     return availableActions;
   }
 
@@ -105,7 +127,7 @@ class StatusButton extends PureComponent {
       normalizeEmojiName,
       intl,
     } = this.props;
-    const { selected } = this.state;
+    const { selected, enableAnimations } = this.state;
     const label = intl.formatMessage(messages.statusTriggerLabel);
 
     const actions = this.getActionsList();
@@ -113,9 +135,19 @@ class StatusButton extends PureComponent {
 
     return (
       <div>
-        <div style={{ position: 'absolute' }}>
-          {usersArray ? usersArray.map((user) => <Styled.Smiley key={user.userId + user.emoji}><Icon iconName={normalizeEmojiName(user.emoji)} /></Styled.Smiley>) : ''}
-        </div>
+        { enableAnimations
+          ? (
+            <>
+              {usersArray ? usersArray.map((user) => (
+                <Styled.Smiley key={user.userId + user.emoji}>
+                  { user.emoji !== 'none' ? user.name : '' }
+                  <Styled.SmileyIcon iconName={normalizeEmojiName(user.emoji)} />
+                </Styled.Smiley>
+              ))
+                : ''}
+            </>
+          )
+          : null}
         <BBBMenu
           trigger={(
             <Styled.EmojiStatusButton

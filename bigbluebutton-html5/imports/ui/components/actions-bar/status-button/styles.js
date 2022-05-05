@@ -1,31 +1,35 @@
 import styled from 'styled-components';
 import Button from '/imports/ui/components/common/button/component';
+import Icon from '/imports/ui/components/common/icon/component';
 import { colorWhite } from '/imports/ui/stylesheets/styled-components/palette';
 
 const Smiley = styled.div`
-    position: absolute;
+    position: fixed;
     visibility: hidden;
     color: ${colorWhite};
     
-    left: 0px;
-    top: 0px;
-    font-size: 2rem;
+    right: 1.5em;
+    text-align: right;
+    width: 100%;
     animation: smiley-animation 3s 1;
   }
   
   @keyframes smiley-animation {
     0% {
-      position: relative;
       visibility: visible;
-      top: -1.5em;
+      bottom: 10%;
     }
     100% {
-      position: relative;
       visibility: visible;
-      top: -5em;
+      bottom: 30%;
       opacity: 0;
     }
   }`;
+
+const SmileyIcon = styled(Icon)`
+  font-size: 2rem;
+  margin-left: 0.2em;
+`;
 
 const EmojiStatusButton = styled(Button)`
   ${({ emoji }) => emoji !== 'raiseHand' && `
@@ -40,4 +44,5 @@ const EmojiStatusButton = styled(Button)`
 export default {
   Smiley,
   EmojiStatusButton,
+  SmileyIcon,
 };

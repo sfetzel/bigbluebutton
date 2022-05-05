@@ -379,6 +379,8 @@
     "app.actionsBar.actionsDropdown.restorePresentationDesc": "Schaltfläche zum Wiederherstellen der Präsentation, nachdem sie minimiert wurde",
     "app.actionsBar.actionsDropdown.minimizePresentationLabel": "Präsentation minimieren",
     "app.actionsBar.actionsDropdown.minimizePresentationDesc": "Schaltfläche zum Minimieren der Präsentation",
+    "app.actionsBar.statusButton.disableAnimationsLabel": "Animationen einschalten",
+    "app.actionsBar.statusButton.enableAnimationsLabel": "Animationen ausschalten",
     "app.screenshare.screenShareLabel" : "Bildschirmfreigabe",
     "app.submenu.application.applicationSectionTitle": "Anwendung",
     "app.submenu.application.animationsLabel": "Animationen",
